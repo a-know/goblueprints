@@ -10,3 +10,29 @@ type room struct {
 	// save all joined clients
 	clients map[*client]bool
 }
+
+func (r *room) run() {
+	for {
+		select {
+		case client := <-r.join:
+			// join this room
+			r.clients[client] = true
+		case client := <-r.leave:
+			// leave from room
+			delete(r.clients, client)
+			close(client.send)
+		case msg := <-r.forward:
+			// send message to all clients
+			for client := range r.clients {
+				select {
+				case client.send <- msg:
+					// send a message
+				default:
+					// fail to sending message
+					delete(r.clients, client)
+					close(client.send)
+				}
+			}
+		}
+	}
+}
