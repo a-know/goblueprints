@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/a-know/goblueprints/chapter1/trace"
 	"github.com/gorilla/websocket"
@@ -21,12 +22,17 @@ type room struct {
 	tracer trace.Tracer
 }
 
-func newRoom() *room {
+func newRoom(logging bool) *room {
+	tracer := trace.New(os.Stdout)
+	if !logging {
+		tracer = trace.Off()
+	}
 	return &room{
 		forward: make(chan []byte),
 		join:    make(chan *client),
 		leave:   make(chan *client),
 		clients: make(map[*client]bool),
+		tracer:  tracer,
 	}
 }
 
