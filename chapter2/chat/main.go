@@ -28,7 +28,7 @@ func main() {
 	var logging = flag.Bool("logging", true, "logging with stdout")
 	flag.Parse()
 	r := newRoom(*logging)
-	http.Handle("/", &templateHandler{filename: "chat.html"})
+	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/room", r)
 	// Starting chatroom
 	go r.run()
