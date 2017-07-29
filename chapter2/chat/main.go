@@ -30,7 +30,8 @@ func main() {
 	r := newRoom(*logging)
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/login", &templateHandler{filename: "login.html"})
-	http.Handle("/room", r)
+	http.HandleFunc("/auth/", loginHandler)
+	http.Handle("/room", r) // for WebSocket connection endpoint
 	// Starting chatroom
 	go r.run()
 	// Starting web server
