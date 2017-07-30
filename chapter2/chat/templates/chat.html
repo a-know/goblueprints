@@ -42,7 +42,7 @@
             messages.append(
               $("<li>").append(
                 $("<strong>").text(msg.Name + ": "),
-                $("<span>").text(msg.Message)
+                $("<span>").text(msg.Message + "(" + (new Date(msg.When)) + ")")
               )
             );
           }
