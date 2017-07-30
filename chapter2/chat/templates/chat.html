@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>Go Blueprints Chat</title>
+    <style>
+      input { display: block; }
+      ul { list-style: none; }
+    </style>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    Chat-Application by WebSocket
+    <form id="chatbox">
+      {{.UserData.name}}:<br/>
+      <textarea></textarea>
+      <input type="submit" value="send" />
+    </form>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+      $(function(){
+        var socket = null;
+        var msgBox = $("#chatbox textarea");
+        var messages = $("#messages");
+        $("#chatbox").submit(function(){
+          if (!msgBox.val()) return false;
+          if (!socket) {
+            alert("Error : Not established WebSocket connection.");
+            return false;
+          }
+          socket.send(JSON.stringify({"Message": msgBox.val()}));
+          msgBox.val("");
+          return false;
+        });
+        if (!window["WebSocket"]) {
+          alert("Error : This browser not supports WebSocket.");
+        } else {
+          socket = new WebSocket("ws://{{.Host}}/room");
+          socket.onclose = function() {
+            alert("Connection closed.");
+          }
+          socket.onmessage = function(e) {
+            var msg = JSON.parse(e.data)
+            messages.append(
+              $("<li>").append(
+                $("<strong>").text(msg.Name + ": "),
+                $("<span>").text(msg.Message + "(" + (new Date(msg.When)) + ")")
+              )
+            );
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
