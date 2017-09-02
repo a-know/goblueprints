@@ -20,7 +20,7 @@ func (c *client) read() {
 		if err := c.socket.ReadJSON(&msg); err == nil {
 			msg.When = time.Now()
 			msg.Name = c.userData["name"].(string)
-			if avatarURL, ok := c.userData["avatarURL"]; ok {
+			if avatarURL, ok := c.userData["avatar_url"]; ok {
 				msg.AvatarURL = avatarURL.(string)
 			}
 			c.room.forward <- msg
