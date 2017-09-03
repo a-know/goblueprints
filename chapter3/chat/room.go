@@ -21,9 +21,11 @@ type room struct {
 	clients map[*client]bool
 	// logging
 	tracer trace.Tracer
+	// get avatar info
+	avatar Avatar
 }
 
-func newRoom(logging bool) *room {
+func newRoom(logging bool, avatar Avatar) *room {
 	tracer := trace.New(os.Stdout)
 	if !logging {
 		tracer = trace.Off()
@@ -34,6 +36,7 @@ func newRoom(logging bool) *room {
 		leave:   make(chan *client),
 		clients: make(map[*client]bool),
 		tracer:  tracer,
+		avatar:  avatar,
 	}
 }
 
