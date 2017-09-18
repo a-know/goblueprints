@@ -49,7 +49,7 @@ func TestFileSystemAvatar(t *testing.T) {
 	filename := filepath.Join("avatars", "abc.jpg")
 	ioutil.WriteFile(filename, []byte{}, 0777)
 	defer func() { os.Remove(filename) }()
-	if err := os.Mkdir("avatars/hoge", 0777); err != nil {
+	if err := os.MkdirAll("avatars/111", 0777); err != nil {
 		t.Error("Something wrong.")
 	}
 
