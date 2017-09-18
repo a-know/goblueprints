@@ -16,6 +16,8 @@ import (
 	"github.com/stretchr/objx"
 )
 
+var avatars Avatar = UseFileSystemAvatar
+
 type templateHandler struct {
 	once     sync.Once
 	filename string
@@ -47,7 +49,7 @@ func main() {
 		github.New(os.Getenv("GITHUB_CLIENT_ID"), os.Getenv("GITHUB_SECRET_KEY"), "http://localhost:8080/auth/callback/github"),
 		google.New(os.Getenv("GOOGLE_CLIENT_ID"), os.Getenv("GOOGLE_SECRET_KEY"), "http://localhost:8080/auth/callback/google"),
 	)
-	r := newRoom(*logging, UseFileSystemAvatar)
+	r := newRoom(*logging)
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/login", &templateHandler{filename: "login.html"})
 	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
