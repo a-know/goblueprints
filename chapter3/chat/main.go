@@ -62,6 +62,7 @@ func main() {
 	})
 	http.HandleFunc("/auth/", loginHandler)
 	http.Handle("/room", r) // for WebSocket connection endpoint
+	http.Handle("/upload", &templateHandler{filename: "upload.html"})
 	// Starting chatroom
 	go r.run()
 	// Starting web server
