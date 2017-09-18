@@ -64,6 +64,7 @@ func main() {
 	http.Handle("/room", r) // for WebSocket connection endpoint
 	http.Handle("/upload", &templateHandler{filename: "upload.html"})
 	http.HandleFunc("/uploader", uploaderHandler)
+	http.Handle("/avatars/", http.StripPrefix("/avatars/", http.FileServer(http.Dir("./avatars"))))
 	// Starting chatroom
 	go r.run()
 	// Starting web server
