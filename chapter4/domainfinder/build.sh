@@ -1,6 +1,6 @@
 #!/bin/bash
 echo Building domainfinder...
-go build -o domainfinder
+go build -o domainfinder.bin
 echo Building synonyms...
 cd ../synonyms
 go build -o ../domainfinder/lib/synonyms.bin
